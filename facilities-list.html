@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sites - Meridian</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f9fafb;
+            color: #111827;
+            line-height: 1.5;
+        }
+
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .top-header .navbar-brand {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .top-header .navbar-nav {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .top-header .navbar-nav a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .top-header .navbar-nav a:hover {
+            color: #2563eb;
+        }
+
+        .top-header .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-header .user-name {
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .main-container {
+            margin-top: 56px;
+            padding: 24px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 24px;
+        }
+
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .controls-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input {
+            padding: 8px 12px 8px 36px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 240px;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .controls-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .btn-add {
+            padding: 8px 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-add:hover {
+            background: #2563eb;
+        }
+
+        .facilities-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .facility-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .facility-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .facility-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f4f6;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .facility-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .facility-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .facility-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .facility-code {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .facility-address {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .facility-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .occupancy-bar {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .facility-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tag {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .tag-green { background: #d1fae5; color: #065f46; }
+        .tag-yellow { background: #fef3c7; color: #92400e; }
+        .tag-blue { background: #dbeafe; color: #1e40af; }
+        .tag-red { background: #fee2e2; color: #991b1b; }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-header">
+        <a href="#" class="navbar-brand">Meridian</a>
+        <ul class="navbar-nav">
+            <li><a href="#">All units</a></li>
+            <li><a href="#">All unit rentals</a></li>
+            <li><a href="#">All jobs</a></li>
+        </ul>
+        <div class="user-menu">
+            <span class="user-name" id="userName">Manager</span>
+            <button class="btn-icon" onclick="logout()" title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Sites</h1>
+            <div class="controls-bar">
+                <div class="controls-left">
+                    <button class="filter-btn" onclick="showFilters()">
+                        <span>Labels</span>
+                        <i class="fas fa-caret-down"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search by code" oninput="filterFacilities()">
+                    </div>
+                </div>
+                <div class="controls-right">
+                    <button class="btn-add" onclick="addFacility()">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Site</span>
+                    </button>
+                    <button class="btn-icon" onclick="refreshFacilities()" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn-icon" onclick="showMenu()" title="More options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="facilitiesContainer" class="facilities-list">
+            <div class="loading">Loading facilities...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycby8_MUFwM7Cwvek9MPxO9K_q4Qsbbj6PBl53eama3j6w0gzyYyj4lCUFPyZ9mvDNxkC/exec';
+        let facilities = [];
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            const firstName = userInfo.First_Name || userInfo.firstName || '';
+            const lastName = userInfo.Last_Name || userInfo.lastName || '';
+            document.getElementById('userName').textContent = `${firstName} ${lastName}`.trim() || 'Manager';
+
+            await loadFacilities();
+        });
+
+        async function loadFacilities() {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const userId = userInfo.User_ID || userInfo.userId;
+                const role = userInfo.Role || userInfo.role || '';
+
+                let response;
+                if (role.toLowerCase() === 'owner') {
+                    response = await fetch(`${API_URL}?action=getAllFacilities`);
+                } else {
+                    response = await fetch(`${API_URL}?action=getManagerSites&userId=${userId}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    facilities = result.sites || result.facilities || [];
+                    renderFacilities();
+                } else {
+                    showError('Failed to load facilities: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error loading facilities:', error);
+                showError('Error loading facilities. Please try again.');
+            }
+        }
+
+        function renderFacilities(filtered = null) {
+            const container = document.getElementById('facilitiesContainer');
+            const facilitiesToRender = filtered || facilities;
+
+            if (facilitiesToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No facilities found</h3>
+                        <p>Get started by adding your first storage facility.</p>
+                        <button class="btn-add" onclick="addFacility()">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Site</span>
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = facilitiesToRender.map(facility => {
+                const totalUnits = parseInt(facility.Total_Units || facility.totalUnits || 0);
+                const occupiedUnits = parseInt(facility.Occupied_Units || facility.occupiedUnits || 0);
+                const occupancyRate = totalUnits > 0 ? Math.round((occupiedUnits / totalUnits) * 100) : 0;
+                const occupancyColor = occupancyRate >= 80 ? '#fee2e2' : occupancyRate >= 50 ? '#fef3c7' : '#d1fae5';
+                const occupancyTextColor = occupancyRate >= 80 ? '#991b1b' : occupancyRate >= 50 ? '#92400e' : '#065f46';
+                
+                const facilityName = facility.Facility_Name || facility.facilityName || 'Unnamed Facility';
+                const facilityCode = facility.Web_Slug || facility.webSlug || facility.Facility_ID || facility.facilityId || '';
+                const address = facility.Address || facility.address || '';
+                const cityState = facility.City_State || facility.cityState || '';
+                const fullAddress = address && cityState ? `${address}, ${cityState}` : (address || cityState || 'No address');
+                
+                // Get facility image from column AF or Drive folder
+                const imageUrl = facility.Facility_Image || facility.facilityImage || '';
+
+                return `
+                    <div class="facility-card" onclick="selectFacility('${facility.Facility_ID || facility.facilityId}')">
+                        <div class="facility-icon">
+                            ${imageUrl ? `<img src="${imageUrl}" alt="${facilityName}">` : '<i class="fas fa-building" style="color: #9ca3af;"></i>'}
+                        </div>
+                        <div class="facility-info">
+                            <div class="facility-name">${facilityName}</div>
+                            <div class="facility-code">${facilityCode}</div>
+                            <div class="facility-address">${fullAddress}</div>
+                        </div>
+                        <div class="facility-stats">
+                            <div class="occupancy-bar" style="background: ${occupancyColor}; color: ${occupancyTextColor};">
+                                ${occupancyRate}% occupied
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterFacilities() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = facilities.filter(facility => {
+                const name = (facility.Facility_Name || facility.facilityName || '').toLowerCase();
+                const code = (facility.Web_Slug || facility.webSlug || facility.Facility_ID || facility.facilityId || '').toLowerCase();
+                return name.includes(searchTerm) || code.includes(searchTerm);
+            });
+            renderFacilities(filtered);
+        }
+
+        function selectFacility(facilityId) {
+            localStorage.setItem('meridian_selected_facility_id', facilityId);
+            window.location.href = 'meridian-manager-dashboard.html';
+        }
+
+        function addFacility() {
+            // Check plan and show payment if needed
+            window.location.href = 'add-facility.html';
+        }
+
+        function refreshFacilities() {
+            loadFacilities();
+        }
+
+        function showFilters() {
+            // TODO: Implement filter dropdown
+        }
+
+        function showMenu() {
+            // TODO: Implement more options menu
+        }
+
+        function logout() {
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('meridian_facilities');
+            localStorage.removeItem('meridian_selected_facility_id');
+            window.location.href = 'login.html';
+        }
+
+        function showError(message) {
+            const container = document.getElementById('facilitiesContainer');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>Error</h3>
+                    <p>${message}</p>
+                    <button class="btn-add" onclick="loadFacilities()">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Retry</span>
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+

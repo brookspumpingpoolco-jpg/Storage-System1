@@ -1,0 +1,3422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meridian Storage Solutions - Facility Management Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* Scroll Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1500;
+            padding: 16px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .header.scrolled {
+            padding: 12px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #3b82f6;
+            border: 2px solid #3b82f6;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            color: #0f172a;
+            padding: 140px 24px 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            color: #0f172a;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            color: #3b82f6;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #64748b;
+            margin-bottom: 40px;
+            line-height: 1.7;
+            font-weight: 400;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            padding: 16px 32px;
+            font-size: 16px;
+        }
+
+        /* Pricing Calculator */
+        .pricing-calculator {
+            padding: 80px 0;
+            background: white;
+            position: relative;
+        }
+
+        .calculator-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .calculator-left {
+            position: sticky;
+            top: 100px;
+        }
+
+        .calculator-right {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .interactive-fact {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-fact:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .fact-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .fact-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+        }
+
+        .fact-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .fact-label {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 968px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .calculator-left {
+                position: static;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .calculator-container {
+                padding: 0 48px;
+            }
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .calculator-header h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .calculator-row {
+            margin-bottom: 32px;
+        }
+
+        .calculator-row label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .calculator-row input[type="number"] {
+            width: 80px;
+            text-align: right;
+            padding: 6px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .calculator-row input[type="number"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .calculator-row input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 12px 0;
+        }
+
+        .calculator-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .calculator-row input[type="range"] {
+            appearance: none;
+        }
+
+        .calculator-row input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .range-labels {
+            position: relative;
+            height: 20px;
+            margin-top: 8px;
+        }
+
+        .range-labels span {
+            position: absolute;
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        /* Position labels at exact slider stop positions */
+        .range-labels.unit-labels span:nth-child(1) { left: 0%; }
+        .range-labels.unit-labels span:nth-child(2) { left: 14.28%; }
+        .range-labels.unit-labels span:nth-child(3) { left: 28.57%; }
+        .range-labels.unit-labels span:nth-child(4) { left: 42.85%; }
+        .range-labels.unit-labels span:nth-child(5) { left: 57.14%; }
+        .range-labels.unit-labels span:nth-child(6) { left: 71.42%; }
+        .range-labels.unit-labels span:nth-child(7) { left: 85.71%; }
+        .range-labels.unit-labels span:nth-child(8) { left: 100%; }
+
+        /* Location labels (1-10) */
+        .range-labels.location-labels span:nth-child(1) { left: 0%; }
+        .range-labels.location-labels span:nth-child(2) { left: 11.11%; }
+        .range-labels.location-labels span:nth-child(3) { left: 22.22%; }
+        .range-labels.location-labels span:nth-child(4) { left: 33.33%; }
+        .range-labels.location-labels span:nth-child(5) { left: 44.44%; }
+        .range-labels.location-labels span:nth-child(6) { left: 55.55%; }
+        .range-labels.location-labels span:nth-child(7) { left: 66.66%; }
+        .range-labels.location-labels span:nth-child(8) { left: 77.77%; }
+        .range-labels.location-labels span:nth-child(9) { left: 88.88%; }
+        .range-labels.location-labels span:nth-child(10) { left: 100%; }
+
+        .calculator-result {
+            margin-top: 32px;
+            padding: 32px;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .result-label-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .result-price {
+            font-size: 48px;
+            font-weight: 800;
+            color: #3b82f6;
+            margin: 8px 0;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .result-price span {
+            font-size: 24px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        .result-breakdown {
+            font-size: 14px;
+            color: #475569;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+
+        .pricing-terms {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .pricing-terms-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .pricing-terms-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pricing-terms-list li {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .pricing-terms-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .pricing-terms-list li strong {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .calculator-cta {
+            margin-top: 32px;
+            text-align: center;
+            padding: 24px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .calculator-cta.show {
+            display: block;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .calculator-cta h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .calculator-cta p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .calculator-cta button {
+            padding: 12px 32px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calculator-cta button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .features {
+            padding: 100px 24px;
+            background: white;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 20px;
+            color: #64748b;
+            margin-bottom: 80px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            border-radius: 20px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            border-color: #3b82f6;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: #f8fafc;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .feature-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .feature-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #3b82f6;
+            flex-shrink: 0;
+        }
+
+        .feature-icon svg * {
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #0f172a;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: #0f172a;
+            color: white;
+            padding: 120px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .cta p {
+            font-size: 20px;
+            margin-bottom: 48px;
+            color: #cbd5e1;
+            line-height: 1.7;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn-primary {
+            padding: 18px 36px;
+            background: white;
+            color: #0f172a;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-btn-secondary {
+            padding: 18px 36px;
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a0e1a;
+            color: #94a3b8;
+            padding: 80px 24px 40px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand img {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 16px;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+
+        .footer-brand p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #64748b;
+        }
+
+        .footer-section h4 {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            font-size: 14px;
+            color: #64748b;
+            margin: 0;
+            text-align: center;
+        }
+
+        .footer-contact {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .footer-contact a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-contact a:hover {
+            color: white;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .footer-social a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        @media (max-width: 968px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 32px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow: auto;
+            padding: 0;
+        }
+
+        .modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            min-height: 700px;
+        }
+        
+        .modal-header {
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: transparent;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #64748b;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #0f172a;
+        }
+
+        /* Login Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            margin-top: 16px;
+            padding: 12px;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            border-radius: 8px;
+            color: #991b1b;
+            font-size: 14px;
+        }
+
+        .success-message {
+            margin-top: 16px;
+            padding: 12px;
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            color: #065f46;
+            font-size: 14px;
+        }
+
+        /* Free Trial Modal */
+        .trial-modal {
+            background: white;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            padding: 48px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .trial-modal h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .trial-modal p {
+            font-size: 18px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .trial-modal-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .trial-modal-btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .trial-modal-btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .trial-modal-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(59, 130, 246, 0.4);
+        }
+
+        .trial-modal-btn-secondary {
+            background: #f8fafc;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+
+        .trial-modal-btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* About Us Modal */
+        .about-modal {
+            background: white;
+            border-radius: 24px;
+            max-width: 700px;
+            width: 100%;
+            padding: 48px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .about-modal h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .about-modal p {
+            font-size: 16px;
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .about-modal .highlight {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        /* Privacy Policy Modal */
+        .privacy-modal {
+            background: white;
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            padding: 48px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .privacy-modal h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .privacy-modal h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        .privacy-modal p {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .privacy-modal ul {
+            margin-left: 24px;
+            margin-bottom: 20px;
+        }
+
+        .privacy-modal ul li {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        .privacy-consent {
+            margin-top: 32px;
+            padding: 24px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .privacy-consent label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .privacy-consent input[type="checkbox"] {
+            margin-top: 4px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+
+        /* Terms Modal */
+        .terms-modal {
+            background: white;
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            padding: 48px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .terms-modal h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .terms-modal h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        .terms-modal p {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .terms-modal ul {
+            margin-left: 24px;
+            margin-bottom: 20px;
+        }
+
+        .terms-modal ul li {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        /* Email Input Section */
+        .email-request-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .email-request-section h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .email-request-section p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .email-input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .email-input-group input[type="email"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .email-input-group input[type="email"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .email-input-group input[type="email"]::placeholder {
+            color: #94a3b8;
+        }
+
+        .send-email-btn {
+            padding: 12px 24px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .send-email-btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .send-email-btn:active {
+            transform: translateY(0);
+        }
+
+        .send-email-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .email-sent-message {
+            display: none;
+            padding: 12px 16px;
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            color: #065f46;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 12px;
+        }
+
+        .email-sent-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .email-input-group {
+                flex-direction: column;
+            }
+
+            .send-email-btn {
+                width: 100%;
+            }
+        }
+
+        /* Privacy Consent Banner */
+        .privacy-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0f172a;
+            color: white;
+            padding: 16px 20px;
+            z-index: 1400;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            display: none;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .privacy-banner.show {
+            display: block;
+            transform: translateY(0);
+        }
+
+        .privacy-banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .privacy-banner-text {
+            flex: 1;
+            font-size: 13px;
+            line-height: 1.5;
+            min-width: 200px;
+        }
+
+        .privacy-banner-text a {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+
+        .privacy-banner-buttons {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .privacy-banner-btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .privacy-banner-btn-accept {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .privacy-banner-btn-accept:hover {
+            background: #2563eb;
+        }
+
+        .privacy-banner-btn-decline {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid #475569;
+        }
+
+        .privacy-banner-btn-decline:hover {
+            background: #1e293b;
+            color: white;
+        }
+
+        /* Add padding to body when banner is shown to prevent content cutoff */
+        body.privacy-banner-active {
+            padding-bottom: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .privacy-banner {
+                padding: 14px 16px;
+            }
+
+            .privacy-banner-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+
+            .privacy-banner-text {
+                font-size: 12px;
+                text-align: center;
+            }
+
+            .privacy-banner-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .privacy-banner-btn {
+                flex: 1;
+                max-width: 150px;
+            }
+
+            body.privacy-banner-active {
+                padding-bottom: 100px;
+            }
+        }
+
+        /* Testimonials - Storable Style */
+        .testimonials {
+            padding: 100px 24px;
+            background: white;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 24px;
+            font-size: 64px;
+            color: #3b82f6;
+            opacity: 0.1;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            border-color: #3b82f6;
+        }
+
+        .testimonial-content {
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-content p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #0f172a;
+            font-weight: 400;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .author-role {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 100px 24px;
+            background: white;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 48px;
+            margin-top: 60px;
+        }
+
+        .benefit-item {
+            text-align: center;
+        }
+
+        .benefit-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 24px;
+            background: #f8fafc;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e2e8f0;
+        }
+
+        .benefit-icon svg {
+            width: 32px;
+            height: 32px;
+            color: #3b82f6;
+        }
+
+        .benefit-item h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .benefit-item p {
+            font-size: 16px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        /* Stats Section - Storable Style */
+        .stats-section {
+            padding: 80px 24px;
+            background: #f8fafc;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 48px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 32px;
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 800;
+            color: #3b82f6;
+            margin-bottom: 12px;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Alternating Content Sections - Storable Style */
+        .content-section {
+            padding: 100px 24px;
+            background: white;
+        }
+
+        .content-section.alt {
+            background: #f8fafc;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .content-wrapper.reverse {
+            direction: rtl;
+        }
+
+        .content-wrapper.reverse > * {
+            direction: ltr;
+        }
+
+        .content-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .content-text p {
+            font-size: 18px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .content-text ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-text ul li {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .content-text ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .content-image {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 40px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* FAQ Section - Storable Style */
+        .faq-section {
+            padding: 100px 24px;
+            background: white;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 24px 0;
+        }
+
+        .faq-question {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        .faq-question:hover {
+            color: #3b82f6;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 28px;
+            font-weight: 300;
+            color: #64748b;
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-top: 16px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            font-size: 16px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .faq-answer ul {
+            margin-top: 12px;
+            padding-left: 24px;
+        }
+
+        .faq-answer ul li {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 968px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .content-wrapper.reverse {
+                direction: ltr;
+            }
+
+            .stat-number {
+                font-size: 48px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .features-grid,
+            .testimonials-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                padding: 8px 12px;
+                font-size: 12px;
+                white-space: nowrap;
+            }
+
+            .header-container {
+                padding: 0 16px;
+            }
+
+            .logo-text {
+                font-size: 16px;
+            }
+
+            .logo img {
+                height: 32px;
+            }
+
+            .feature-icon {
+                width: 64px;
+                height: 64px;
+                margin-bottom: 20px;
+            }
+
+            .feature-icon svg {
+                width: 32px;
+                height: 32px;
+            }
+
+            .calculator-container {
+                padding: 32px 24px;
+            }
+
+            .result-price {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://cdn.prod.website-files.com/6931dc4e8e97334e195432df/69667ee6f82275ff9373308c_Screenshot%202026-01-13%20at%2012.20.31%E2%80%AFPM.png" alt="Meridian">
+                <span class="logo-text">Meridian</span>
+            </div>
+            <div class="nav-buttons">
+                <a href="#features" class="btn btn-secondary" onclick="scrollToSection('#features'); return false;">Features</a>
+                <a href="#pricing" class="btn btn-secondary" onclick="scrollToSection('#pricing'); return false;">Pricing</a>
+                <button class="btn btn-secondary" onclick="openLoginModal()">Login</button>
+                <button class="btn btn-primary" onclick="openDemoModal()">Book a Demo</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1 class="fade-in">Automate your<br>Self Storage Business<br>with <em>Meridian</em></h1>
+            <p class="fade-in" style="transition-delay: 0.2s;">Meridian is a comprehensive yet intuitive software solution powering self storage businesses of all sizes all over the world</p>
+            <div class="hero-buttons fade-in" style="transition-delay: 0.4s;">
+                <button class="btn btn-primary btn-large" onclick="openDemoModal()">Book demo</button>
+                <button class="btn btn-secondary btn-large" onclick="openFreeTrialModal()">Book free trial</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number">25%</div>
+                    <div class="stat-label">Average increase in revenue</div>
+                </div>
+                <div class="stat-item fade-in" style="transition-delay: 0.1s;">
+                    <div class="stat-number">40+</div>
+                    <div class="stat-label">Hours saved every month on critical workflows</div>
+                </div>
+                <div class="stat-item fade-in" style="transition-delay: 0.2s;">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Hours saved every month on communications</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Calculator Section -->
+    <section class="pricing-calculator" id="pricing">
+        <div class="calculator-container">
+            <div class="calculator-left">
+                <div class="calculator-header">
+                    <h2>Estimate your costs for using Meridian</h2>
+                    <p>Get an instant quote based on your facility size and number of locations</p>
+                </div>
+                <div class="calculator-card">
+                <div class="calculator-row">
+                    <label>
+                        <span>Number of locations</span>
+                        <input type="number" id="locations" min="1" max="10" value="1" onchange="calculatePrice()" oninput="updateLocationRange()">
+                    </label>
+                    <input type="range" id="locations-range" min="1" max="10" value="1" step="1" oninput="updateLocationInput()">
+                    <div class="range-labels location-labels">
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>6</span>
+                        <span>7</span>
+                        <span>8</span>
+                        <span>9</span>
+                        <span>10</span>
+                    </div>
+                </div>
+                <div class="calculator-row">
+                    <label>
+                        <span>Total number of units per location</span>
+                        <input type="number" id="units" min="1" value="50" onchange="updateUnitRange(); calculatePrice();" oninput="updateUnitRange()">
+                    </label>
+                    <input type="range" id="units-range" min="0" max="7" value="1" step="1" oninput="updateUnitInput()">
+                    <div class="range-labels unit-labels">
+                        <span>1</span>
+                        <span>50</span>
+                        <span>75</span>
+                        <span>100</span>
+                        <span>125</span>
+                        <span>150</span>
+                        <span>200</span>
+                        <span>250</span>
+                    </div>
+                </div>
+                <div class="calculator-result">
+                    <div class="result-header">
+                        <div class="result-label-text">Estimated Monthly Cost</div>
+                        <div class="result-price" id="estimatedPrice">$150<span>/mo</span></div>
+                    </div>
+                    <div class="result-breakdown" id="priceBreakdown"></div>
+                    <div class="pricing-terms">
+                        <div class="pricing-terms-title">Pricing Terms</div>
+                        <ul class="pricing-terms-list">
+                            <li><strong>Base Fee:</strong> $150/month for 1-100 units</li>
+                            <li><strong>Additional Units:</strong> $0.40 per unit over 100</li>
+                            <li><strong>Setup Fee:</strong> $199 one-time per location</li>
+                            <li><strong>Annual Fee:</strong> $175 per facility per year</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="calculator-cta" id="calculatorCTA">
+                    <h3>Ready to get started?</h3>
+                    <p>Book a personalized demo to see how Meridian can transform your facility management</p>
+                    <button onclick="openDemoModal()">Book a Demo</button>
+                </div>
+                </div>
+            </div>
+            
+            <div class="calculator-right">
+                <div class="interactive-fact">
+                    <div class="fact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="fact-number" id="factUnits">50</div>
+                    <div class="fact-label">Units per location based on your selection</div>
+                </div>
+                
+                <div class="interactive-fact">
+                    <div class="fact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <div class="fact-number" id="factLocations">1</div>
+                    <div class="fact-label">Location<span id="locationPlural">s</span> you're managing</div>
+                </div>
+                
+                <div class="interactive-fact">
+                    <div class="fact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <div class="fact-number" id="factMonthly">$150</div>
+                    <div class="fact-label">Monthly subscription cost</div>
+                </div>
+                
+                <div class="interactive-fact">
+                    <div class="fact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                            <line x1="1" y1="10" x2="23" y2="10"/>
+                        </svg>
+                    </div>
+                    <div class="fact-number" id="factSetup">$199</div>
+                    <div class="fact-label">One-time setup fee per location</div>
+                </div>
+                
+                <div class="interactive-fact">
+                    <div class="fact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <div class="fact-number">24/7</div>
+                    <div class="fact-label">Support available whenever you need it</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2 class="section-title fade-in">Everything You Need to Manage Your Facility</h2>
+            <p class="section-subtitle fade-in" style="transition-delay: 0.1s;">Comprehensive tools designed specifically for self-storage facilities</p>
+            
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3v18h18M7 16l4-4 4 4 6-6"/>
+                        </svg>
+                    </div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Real-time revenue tracking, occupancy rates, and performance metrics to make data-driven decisions.</p>
+                </div>
+                <div class="feature-card fade-in" style="transition-delay: 0.1s;">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <h3>Unit Management</h3>
+                    <p>Full control over all units - create, edit, assign customers, and track availability in real-time.</p>
+                </div>
+                <div class="feature-card fade-in" style="transition-delay: 0.2s;">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <h3>Interactive Sitemap</h3>
+                    <p>Visual sitemap editor with drag & drop functionality to map your entire facility layout.</p>
+                </div>
+                <div class="feature-card fade-in" style="transition-delay: 0.3s;">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>Customer Portal</h3>
+                    <p>Manage customer information, unit assignments, and communication all in one place.</p>
+                </div>
+                <div class="feature-card fade-in" style="transition-delay: 0.4s;">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <h3>Revenue Tracking</h3>
+                    <p>Track monthly revenue, payment history, and financial performance with detailed reports.</p>
+                </div>
+                <div class="feature-card fade-in" style="transition-delay: 0.5s;">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3>White-Label Websites</h3>
+                    <p>Optional professional website for your facility with custom branding and domain.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="features-container">
+            <h2 class="section-title fade-in">Trusted by Storage Facilities Worldwide</h2>
+            <p class="section-subtitle fade-in" style="transition-delay: 0.1s;">See what facility owners are saying about Meridian</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-content">
+                        <p>"Meridian has transformed how we manage our facility. 60% of our bookings are now online - completely contactless. The automation is incredible."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <div class="author-name">John Davis</div>
+                            <div class="author-role">Facility Owner, Texas</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in" style="transition-delay: 0.1s;">
+                    <div class="testimonial-content">
+                        <p>"The support team is outstanding - they respond in minutes, not days. The platform is intuitive and makes managing multiple locations effortless."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SM</div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah Martinez</div>
+                            <div class="author-role">Operations Manager, California</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in" style="transition-delay: 0.2s;">
+                    <div class="testimonial-content">
+                        <p>"We run two facilities 97% autonomously with Meridian. The real-time analytics help us make data-driven decisions that boost revenue."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <div class="author-name">Mike Roberts</div>
+                            <div class="author-role">Facility Owner, Florida</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section 1 - Storable Style -->
+    <section class="content-section">
+        <div class="content-wrapper">
+            <div class="content-text fade-in">
+                <h2>Rent More Units with Contactless Online Bookings</h2>
+                <p>Empower your customers to book and manage their storage from any device with our customer portal - integrated with any website seamlessly.</p>
+                <ul>
+                    <li>Convert more rentals with automated booking</li>
+                    <li>Take payments securely online</li>
+                    <li>Move tenants in/out with digital workflows</li>
+                    <li>Sign and manage electronic leases</li>
+                    <li>View real-time availability and pricing</li>
+                </ul>
+            </div>
+            <div class="content-image fade-in" style="transition-delay: 0.2s;">
+                <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="400" height="300" fill="#f1f5f9"/>
+                    <rect x="50" y="50" width="300" height="200" rx="8" fill="#3b82f6" opacity="0.1"/>
+                    <rect x="80" y="80" width="240" height="30" rx="4" fill="#3b82f6" opacity="0.2"/>
+                    <rect x="80" y="130" width="180" height="20" rx="4" fill="#64748b" opacity="0.2"/>
+                    <rect x="80" y="160" width="200" height="20" rx="4" fill="#64748b" opacity="0.2"/>
+                    <circle cx="300" cy="150" r="40" fill="#3b82f6" opacity="0.2"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section 2 - Storable Style -->
+    <section class="content-section alt">
+        <div class="content-wrapper reverse">
+            <div class="content-text fade-in">
+                <h2>Manage Your Business from Anywhere</h2>
+                <p>Modern, intuitive software that works on any device enables you and your team to monitor and manage your business remotely.</p>
+                <ul>
+                    <li>Access your dashboard from any device</li>
+                    <li>Real-time updates across all platforms</li>
+                    <li>Interactive audits and reporting</li>
+                    <li>Graphical dashboard with key metrics</li>
+                    <li>Mobile-optimized for on-the-go management</li>
+                </ul>
+            </div>
+            <div class="content-image fade-in" style="transition-delay: 0.2s;">
+                <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="400" height="300" fill="#ffffff"/>
+                    <rect x="100" y="50" width="200" height="200" rx="12" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+                    <circle cx="200" cy="120" r="30" fill="#3b82f6" opacity="0.2"/>
+                    <rect x="130" y="170" width="140" height="8" rx="4" fill="#3b82f6" opacity="0.3"/>
+                    <rect x="130" y="190" width="100" height="8" rx="4" fill="#64748b" opacity="0.2"/>
+                    <rect x="130" y="210" width="120" height="8" rx="4" fill="#64748b" opacity="0.2"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section 3 - Storable Style -->
+    <section class="content-section">
+        <div class="content-wrapper">
+            <div class="content-text fade-in">
+                <h2>Streamline & Automate Your Operations</h2>
+                <p>Comprehensive API and integrations enable you to automate tasks, synchronize data, and eliminate manual work.</p>
+                <ul>
+                    <li>Automate tenant communications</li>
+                    <li>Synchronize data across platforms</li>
+                    <li>Integrate with payment processors</li>
+                    <li>Automated reporting and analytics</li>
+                    <li>Reduce manual data entry by 80%</li>
+                </ul>
+            </div>
+            <div class="content-image fade-in" style="transition-delay: 0.2s;">
+                <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="400" height="300" fill="#f1f5f9"/>
+                    <path d="M100 150 L150 100 L200 150 L250 100 L300 150" stroke="#3b82f6" stroke-width="3" fill="none" opacity="0.6"/>
+                    <circle cx="150" cy="100" r="8" fill="#3b82f6"/>
+                    <circle cx="200" cy="150" r="8" fill="#3b82f6"/>
+                    <circle cx="250" cy="100" r="8" fill="#3b82f6"/>
+                    <circle cx="300" cy="150" r="8" fill="#3b82f6"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section - Storable Style -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 class="section-title fade-in">Meridian Software FAQ</h2>
+            <p class="section-subtitle fade-in" style="transition-delay: 0.1s;">Get answers to common questions about our platform</p>
+            
+            <div class="faq-item fade-in">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What kind of support do Meridian customers have access to?
+                </div>
+                <div class="faq-answer">
+                    <p>We recognize that most of your self-storage business is managed in your facility management software and we treat it with the appropriate level of urgency.</p>
+                    <ul>
+                        <li>Our teams are cross-trained to support all of our products</li>
+                        <li>Our tech support team, on average, picks up a call within 60 seconds</li>
+                        <li>Best of all? Meridian Support is entirely covered within your monthly subscription</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item fade-in" style="transition-delay: 0.1s;">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How do I know if Meridian is a good fit for my business?
+                </div>
+                <div class="faq-answer">
+                    <p>Meridian feature-rich software was built from the ground up to provide a flexible, comprehensive solution to address your most critical business challenges.</p>
+                    <ul>
+                        <li>If you need highly-configurable daily workflows or a tailored set of vendor products to meet the needs of your business, Meridian is the solution for you</li>
+                        <li>Meridian has something for both small and large operations</li>
+                        <li>Our smaller operators typically tell us they appreciate the ability to choose from integrations that they use to tailor workflows specifically to their business</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item fade-in" style="transition-delay: 0.2s;">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    If I switch to Meridian, can I transfer my existing data and business information?
+                </div>
+                <div class="faq-answer">
+                    <p><strong>Short answer: yes!</strong></p>
+                    <p>We have a dedicated team committed to making it as easy as possible for you to bring your current business information from your old property management software to Meridian. The experience looks a little different depending on which software you're using today, but we'd love to have a chat with you about what that process looks like.</p>
+                </div>
+            </div>
+
+            <div class="faq-item fade-in" style="transition-delay: 0.3s;">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Does Meridian require a contract?
+                </div>
+                <div class="faq-answer">
+                    <p>Meridian is billed monthly and only requires a monthly commitment. We're confident you won't want to switch after trying our solution, however, you're free to cancel at any time. After all, there's a reason that thousands of facilities trust Meridian software to help run their business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-container">
+            <h2 class="fade-in">Ready to Transform Your Facility?</h2>
+            <p class="fade-in" style="transition-delay: 0.2s;">See how Meridian can streamline your operations and boost your revenue. Schedule a demo today.</p>
+            <div class="cta-buttons fade-in" style="transition-delay: 0.4s;">
+                <button class="cta-btn-primary" onclick="openDemoModal()">Book a Demo</button>
+                <a href="#pricing" class="cta-btn-secondary">View Pricing</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="https://cdn.prod.website-files.com/6931dc4e8e97334e195432df/69667ee6f82275ff9373308c_Screenshot%202026-01-13%20at%2012.20.31%E2%80%AFPM.png" alt="Meridian">
+                    <p>Professional facility management platform designed for modern storage facilities. Streamline operations, boost revenue, and grow your business.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features" onclick="scrollToSection('#features'); return false;">Features</a></li>
+                        <li><a href="#pricing" onclick="scrollToSection('#pricing'); return false;">Pricing</a></li>
+                        <li><a href="#" onclick="openDemoModal(); return false;">Book a Demo</a></li>
+                        <li><a href="#" onclick="openLoginModal(); return false;">Login</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="openAboutModal(); return false;">About Us</a></li>
+                        <li><a href="tel:+15027069172">Call Us: (502) 706-9172</a></li>
+                        <li><a href="mailto:info@harborandhomestorage.com">Email Us</a></li>
+                        <li><a href="#" onclick="openPrivacyModal(); return false;">Privacy Policy</a></li>
+                        <li><a href="#" onclick="openTermsModal(); return false;">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-contact">
+                    <a href="tel:+15027069172">(502) 706-9172</a>
+                    <a href="mailto:info@harborandhomestorage.com">info@harborandhomestorage.com</a>
+                </div>
+                <p>© 2025 Meridian Storage Solutions Corporation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Privacy Consent Banner -->
+    <div class="privacy-banner" id="privacyBanner">
+        <div class="privacy-banner-content">
+            <div class="privacy-banner-text">
+                By accessing this website, you automatically consent to our <a href="#" onclick="openPrivacyModal(); return false;">Privacy Policy</a> and agree to receive automated communications via Twilio. We use cookies and tracking to improve your experience. Message and data rates may apply.
+            </div>
+            <div class="privacy-banner-buttons">
+                <button class="privacy-banner-btn privacy-banner-btn-accept" onclick="acceptPrivacyPolicy()">Accept</button>
+                <button class="privacy-banner-btn privacy-banner-btn-decline" onclick="declinePrivacyPolicy()">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Free Trial Modal -->
+    <div class="modal-overlay" id="freeTrialModal">
+        <div class="trial-modal">
+            <h2>Book a Demo to Get Started!</h2>
+            <p>Schedule your demo and we'll redeem your free trial. See how Meridian can transform your facility management.</p>
+            <div class="trial-modal-buttons">
+                <button class="trial-modal-btn trial-modal-btn-primary" onclick="openDemoFromTrial()">Book a Demo</button>
+                <button class="trial-modal-btn trial-modal-btn-secondary" onclick="closeFreeTrialModal()">Maybe Later</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Modal -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="about-modal">
+            <div class="modal-header">
+                <h2>About Meridian</h2>
+                <button class="modal-close" onclick="closeAboutModal()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <p>Meridian was founded by a small-town, one-person team of software engineers who recognized a greater purpose for storage facility management. We saw the challenges that storage operators face every day and set out to create a solution that truly serves the entire storage community.</p>
+                
+                <p>This software has been designed with <span class="highlight">you</span> in mind—every feature, every workflow, and every integration was built to solve real problems faced by real storage facility owners and managers.</p>
+                
+                <p>We understand that running a storage facility isn't just about managing units—it's about building relationships with customers, optimizing operations, and growing your business. That's why Meridian goes beyond basic management software to provide a comprehensive platform that empowers you to succeed.</p>
+                
+                <p>From small single-facility operations to multi-location portfolios, Meridian scales with your business. Our commitment is simple: provide powerful, intuitive software that makes your life easier and your business more profitable.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="privacy-modal">
+            <div class="modal-header">
+                <h2>Privacy Policy & Federal Campaign Enrollment</h2>
+                <button class="modal-close" onclick="closePrivacyModal()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <div class="email-request-section">
+                    <h4>Get a copy via email</h4>
+                    <p>Enter your email address and we'll send you a copy of our Privacy Policy.</p>
+                    <div class="email-input-group">
+                        <input type="email" id="privacyEmail" placeholder="your.email@example.com">
+                        <button class="send-email-btn" onclick="sendPrivacyPolicyEmail()" id="sendPrivacyBtn">Send</button>
+                    </div>
+                    <div class="email-sent-message" id="privacyEmailSent">✓ Email sent successfully! Check your inbox.</div>
+                </div>
+                <p><strong>Last Updated:</strong> January 2025</p>
+                
+                <h3>Information We Collect</h3>
+                <p>Meridian Storage Solutions Corporation ("we," "our," or "us") collects information that you provide directly to us, including:</p>
+                <ul>
+                    <li>Contact information (name, email address, phone number)</li>
+                    <li>Business information (facility name, address, unit counts)</li>
+                    <li>Payment information (processed securely through Stripe)</li>
+                    <li>Website usage data (IP address, location, browser information)</li>
+                </ul>
+
+                <h3>How We Use Your Information</h3>
+                <p>We use the information we collect to:</p>
+                <ul>
+                    <li>Provide and improve our software services</li>
+                    <li>Process payments and manage subscriptions</li>
+                    <li>Send you important updates and communications</li>
+                    <li>Analyze website usage and improve user experience</li>
+                    <li>Comply with legal obligations</li>
+                </ul>
+
+                <h3>Federal Campaign Enrollment (Twilio)</h3>
+                <p>By enrolling in our federal campaign, you consent to receive automated text messages and phone calls from Meridian via Twilio for:</p>
+                <ul>
+                    <li>Service updates and notifications</li>
+                    <li>Account-related communications</li>
+                    <li>Marketing messages (you can opt-out at any time)</li>
+                </ul>
+                <p><strong>Message and data rates may apply.</strong> You can opt-out by replying STOP to any message or contacting us at info@harborandhomestorage.com.</p>
+
+                <h3>Data Security</h3>
+                <p>We implement industry-standard security measures to protect your information. All payment data is processed securely through Stripe and is never stored on our servers.</p>
+
+                <h3>Your Rights</h3>
+                <p>You have the right to access, update, or delete your personal information. Contact us at info@harborandhomestorage.com to exercise these rights.</p>
+
+                <div class="privacy-consent" style="margin-top: 24px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 2px solid #e2e8f0;">
+                    <p style="margin: 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                        <strong>By accessing this website, you automatically consent to receive automated communications via Twilio and agree to the Privacy Policy terms.</strong> Message and data rates may apply. You can opt-out by replying STOP to any message or contacting us at info@harborandhomestorage.com.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="terms-modal">
+            <div class="modal-header">
+                <h2>Terms of Service</h2>
+                <button class="modal-close" onclick="closeTermsModal()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <div class="email-request-section">
+                    <h4>Get a copy via email</h4>
+                    <p>Enter your email address and we'll send you a copy of our Terms of Service.</p>
+                    <div class="email-input-group">
+                        <input type="email" id="termsEmail" placeholder="your.email@example.com">
+                        <button class="send-email-btn" onclick="sendTermsEmail()" id="sendTermsBtn">Send</button>
+                    </div>
+                    <div class="email-sent-message" id="termsEmailSent">✓ Email sent successfully! Check your inbox.</div>
+                </div>
+                <p><strong>Last Updated:</strong> January 2025</p>
+                
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing or using Meridian Storage Solutions Corporation's software and services, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services.</p>
+
+                <h3>2. Service Description</h3>
+                <p>Meridian provides cloud-based facility management software for self-storage businesses. Our services include unit management, customer management, payment processing, reporting, and related features.</p>
+
+                <h3>3. Subscription and Payment</h3>
+                <p>Subscriptions are billed monthly. Pricing is based on the number of units and locations as outlined in our pricing calculator. Setup fees and annual fees apply as specified. All payments are processed securely through Stripe.</p>
+
+                <h3>4. User Responsibilities</h3>
+                <p>You are responsible for:</p>
+                <ul>
+                    <li>Maintaining the confidentiality of your account credentials</li>
+                    <li>All activities that occur under your account</li>
+                    <li>Ensuring the accuracy of data entered into the system</li>
+                    <li>Complying with all applicable laws and regulations</li>
+                </ul>
+
+                <h3>5. Data and Privacy</h3>
+                <p>You retain ownership of all data you enter into Meridian. We will not access, use, or disclose your data except as necessary to provide our services or as required by law. See our Privacy Policy for details.</p>
+
+                <h3>6. Service Availability</h3>
+                <p>We strive for 99.9% uptime but do not guarantee uninterrupted service. We are not liable for any downtime or service interruptions.</p>
+
+                <h3>7. Cancellation</h3>
+                <p>You may cancel your subscription at any time. Cancellation takes effect at the end of your current billing period. No refunds are provided for partial months.</p>
+
+                <h3>8. Limitation of Liability</h3>
+                <p>Meridian's liability is limited to the amount you paid in the 12 months preceding any claim. We are not liable for indirect, incidental, or consequential damages.</p>
+
+                <h3>9. Contact Information</h3>
+                <p>For questions about these terms, contact us at:</p>
+                <p><strong>Email:</strong> info@harborandhomestorage.com<br>
+                <strong>Phone:</strong> (502) 706-9172</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal" style="max-width: 600px; min-height: 700px; height: auto; max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="modal-header" style="padding: 24px; border-bottom: 1px solid #e2e8f0; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+                <h2 style="color: white; margin: 0; font-size: 24px; font-weight: 700;">Login to Meridian</h2>
+                <button class="modal-close" onclick="closeLoginModal()" style="color: white; font-size: 32px; opacity: 0.8;">×</button>
+            </div>
+            <div class="modal-body" style="flex: 1; padding: 0; overflow: hidden; background: #ffffff;">
+                <iframe id="loginFrame" src="login.html" style="width: 100%; height: 650px; border: none; min-height: 650px;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Booking Modal -->
+    <div class="modal-overlay" id="demoModal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Book a Demo</h2>
+                <button class="modal-close" onclick="closeDemoModal()">×</button>
+            </div>
+            <div class="modal-body" style="text-align: center; padding: 48px 32px;">
+                <div style="margin-bottom: 32px;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" style="margin: 0 auto 24px;">
+                        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                        <line x1="2" y1="10" x2="22" y2="10"/>
+                        <path d="M7 15h.01M11 15h.01"/>
+                    </svg>
+                    <h3 style="font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 12px;">Ready to see Meridian in action?</h3>
+                    <p style="font-size: 16px; color: #64748b; line-height: 1.6; margin-bottom: 0;">
+                        Click the button below to open our demo booking page in a new window. Schedule a time that works for you and we'll show you how Meridian can transform your facility management.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <button 
+                        onclick="window.open('https://box-it---lock-it---store-it-clinton-tn.webflow.io/book-a-demo', '_blank', 'noopener,noreferrer')" 
+                        style="padding: 14px 32px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">
+                        Open Demo Booking Page
+                    </button>
+                    <button 
+                        onclick="closeDemoModal()" 
+                        style="padding: 14px 32px; background: #f8fafc; color: #64748b; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                        Maybe Later
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Backend API URL - MeridianBackend web app URL
+        const BACKEND_API_URL = 'https://script.google.com/macros/s/AKfycby8_MUFwM7Cwvek9MPxO9K_q4Qsbbj6PBl53eama3j6w0gzyYyj4lCUFPyZ9mvDNxkC/exec';
+        const DEMO_API_URL = 'https://script.google.com/macros/s/YOUR_DEMO_SCRIPT_ID/exec'; // Update with DemoBookingBackend web app URL if using separate backend
+
+        // Log website access on page load
+        async function logWebsiteAccess() {
+            try {
+                // Get browser/device information
+                const pageUrl = window.location.href;
+                const userAgent = navigator.userAgent;
+                const referrer = document.referrer || 'Direct';
+                const screenResolution = `${screen.width}x${screen.height}`;
+                const language = navigator.language || navigator.userLanguage || 'Unknown';
+                
+                // Get IP address and location using a free API
+                let ipAddress = 'Unknown';
+                let country = 'Unknown';
+                let region = 'Unknown';
+                let city = 'Unknown';
+                
+                try {
+                    // Use ipapi.co for geolocation (free tier: 1000 requests/day)
+                    const ipResponse = await fetch('https://ipapi.co/json/');
+                    if (ipResponse.ok) {
+                        const ipData = await ipResponse.json();
+                        ipAddress = ipData.ip || 'Unknown';
+                        country = ipData.country_name || 'Unknown';
+                        region = ipData.region || 'Unknown';
+                        city = ipData.city || 'Unknown';
+                    }
+                } catch (ipError) {
+                    console.log('Could not fetch IP/location data:', ipError);
+                    // Fallback: try alternative service
+                    try {
+                        const altResponse = await fetch('https://api.ipify.org?format=json');
+                        if (altResponse.ok) {
+                            const altData = await altResponse.json();
+                            ipAddress = altData.ip || 'Unknown';
+                        }
+                    } catch (altError) {
+                        console.log('Could not fetch IP from alternative service:', altError);
+                    }
+                }
+                
+                // Send to backend (fire and forget - don't wait for response)
+                // Use GET request with URL parameters
+                const params = new URLSearchParams({
+                    action: 'logWebsiteAccess',
+                    ipAddress: ipAddress,
+                    country: country,
+                    region: region,
+                    city: city,
+                    pageUrl: pageUrl,
+                    userAgent: userAgent,
+                    referrer: referrer,
+                    screenResolution: screenResolution,
+                    language: language
+                });
+                
+                fetch(BACKEND_API_URL + '?' + params.toString(), {
+                    method: 'GET',
+                    mode: 'no-cors' // Use no-cors to avoid CORS issues
+                }).catch(error => {
+                    console.log('Failed to log website access:', error);
+                });
+                
+            } catch (error) {
+                console.log('Error logging website access:', error);
+            }
+        }
+
+        // Log access when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            logWebsiteAccess();
+        });
+
+        function openDemoModal() {
+            document.getElementById('demoModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDemoModal() {
+            document.getElementById('demoModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openFreeTrialModal() {
+            document.getElementById('freeTrialModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFreeTrialModal() {
+            document.getElementById('freeTrialModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openDemoFromTrial() {
+            closeFreeTrialModal();
+            setTimeout(() => {
+                openDemoModal();
+            }, 300);
+        }
+
+        // Login Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Reload iframe to reset login form
+            const iframe = document.getElementById('loginFrame');
+            if (iframe) {
+                iframe.src = iframe.src; // Reload iframe
+            }
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Listen for login success from iframe
+        window.addEventListener('message', function(event) {
+            // Verify origin for security (update with your domain)
+            // if (event.origin !== 'https://your-domain.com') return;
+            
+            if (event.data && event.data.type === 'login_success') {
+                const { userInfo, facilities, primaryFacilityId, role } = event.data;
+                
+                console.log('Login success message received from iframe');
+                console.log('User role:', role);
+                console.log('FORCING redirect to manager dashboard - ignoring role:', role);
+                
+                // Store user data in localStorage
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                if (facilities) {
+                    localStorage.setItem('meridian_facilities', JSON.stringify(facilities));
+                }
+                if (primaryFacilityId) {
+                    localStorage.setItem('meridian_primary_facility_id', primaryFacilityId);
+                    localStorage.setItem('meridian_selected_facility_id', primaryFacilityId);
+                }
+                
+                // Close login modal IMMEDIATELY
+                closeLoginModal();
+                
+                // FORCE redirect to manager dashboard - NO EXCEPTIONS
+                // Stop any other redirects from happening
+                const currentPath = window.location.pathname;
+                const lastSlash = currentPath.lastIndexOf('/');
+                const basePath = lastSlash > 0 ? currentPath.substring(0, lastSlash) : '';
+                
+                // ALWAYS use manager dashboard - never owner dashboard
+                let dashboardPath;
+                if (basePath) {
+                    dashboardPath = basePath + '/meridian-manager-dashboard.html';
+                } else {
+                    dashboardPath = './meridian-manager-dashboard.html';
+                }
+                
+                console.log('Current path:', currentPath);
+                console.log('Base path:', basePath);
+                console.log('FINAL REDIRECT PATH:', dashboardPath);
+                console.log('FORCING redirect - role is:', role, 'but going to manager dashboard');
+                
+                // Use replace to prevent back button and any other redirects
+                window.location.replace(dashboardPath);
+                
+                // Prevent any other redirects from executing
+                return;
+            }
+        });
+
+        // Forgot Password Modal Functions
+        function openForgotPasswordModal() {
+            closeLoginModal();
+            setTimeout(() => {
+                document.getElementById('forgotPasswordModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, 300);
+        }
+
+        function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset form
+            document.getElementById('forgotPasswordForm').reset();
+            document.getElementById('forgotPasswordError').style.display = 'none';
+            document.getElementById('forgotPasswordSuccess').style.display = 'none';
+            document.getElementById('forgotPasswordStep1').style.display = 'block';
+            document.getElementById('forgotPasswordStep2').style.display = 'none';
+        }
+
+        // Handle Login
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const btnText = document.getElementById('loginBtnText');
+            const btnSpinner = document.getElementById('loginBtnSpinner');
+            const errorDiv = document.getElementById('loginError');
+
+            // Clear previous errors
+            errorDiv.style.display = 'none';
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnSpinner.style.display = 'inline';
+
+            try {
+                const params = new URLSearchParams({
+                    action: 'login',
+                    email: email,
+                    password: password
+                });
+
+                const response = await fetch(BACKEND_API_URL + '?' + params.toString());
+                const result = await response.json();
+
+                if (result.success && result.userInfo) {
+                    console.log('Login successful! User role:', result.userInfo.Role || result.userInfo.role);
+                    console.log('Redirecting to: meridian-manager-dashboard.html');
+                    
+                    // Store user info in localStorage
+                    localStorage.setItem('userInfo', JSON.stringify(result.userInfo));
+                    localStorage.setItem('meridian_user', JSON.stringify(result.userInfo));
+                    localStorage.setItem('meridian_user_email', email);
+                    
+                    // Store facilities data
+                    if (result.facilities) {
+                        localStorage.setItem('meridian_facilities', JSON.stringify(result.facilities));
+                    }
+                    if (result.primaryFacilityId) {
+                        localStorage.setItem('meridian_primary_facility_id', result.primaryFacilityId);
+                        localStorage.setItem('meridian_selected_facility_id', result.primaryFacilityId);
+                    }
+
+                    // Close modal and redirect to manager dashboard (force with replace)
+                    closeLoginModal();
+                    const currentPath = window.location.pathname;
+                    const lastSlash = currentPath.lastIndexOf('/');
+                    const basePath = lastSlash > 0 ? currentPath.substring(0, lastSlash) : '';
+                    const dashboardPath = (basePath ? basePath + '/' : './') + 'meridian-manager-dashboard.html';
+                    console.log('Current path:', currentPath);
+                    console.log('Base path:', basePath);
+                    console.log('Redirecting to:', dashboardPath);
+                    window.location.replace(dashboardPath);
+                } else {
+                    errorDiv.textContent = result.error || 'Login failed. Please try again.';
+                    errorDiv.style.display = 'block';
+                    btn.disabled = false;
+                    btnText.style.display = 'inline';
+                    btnSpinner.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorDiv.textContent = 'Network error. Please check your connection and try again.';
+                errorDiv.style.display = 'block';
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                btnSpinner.style.display = 'none';
+            }
+        }
+
+        // Handle Forgot Password
+        async function handleForgotPassword(event) {
+            event.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
+            const btn = document.getElementById('forgotPasswordBtn');
+            const btnText = document.getElementById('forgotPasswordBtnText');
+            const btnSpinner = document.getElementById('forgotPasswordBtnSpinner');
+            const errorDiv = document.getElementById('forgotPasswordError');
+            const successDiv = document.getElementById('forgotPasswordSuccess');
+
+            // Clear previous messages
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnSpinner.style.display = 'inline';
+
+            try {
+                const params = new URLSearchParams({
+                    action: 'forgotPassword',
+                    email: email
+                });
+
+                const response = await fetch(BACKEND_API_URL + '?' + params.toString());
+                const result = await response.json();
+
+                if (result.success) {
+                    // Show success step
+                    document.getElementById('forgotPasswordStep1').style.display = 'none';
+                    document.getElementById('forgotPasswordStep2').style.display = 'block';
+                } else {
+                    errorDiv.textContent = result.error || 'Failed to send reset link. Please try again.';
+                    errorDiv.style.display = 'block';
+                    btn.disabled = false;
+                    btnText.style.display = 'inline';
+                    btnSpinner.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Forgot password error:', error);
+                errorDiv.textContent = 'Network error. Please check your connection and try again.';
+                errorDiv.style.display = 'block';
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                btnSpinner.style.display = 'none';
+            }
+        }
+
+        // Close modals on overlay click
+        document.getElementById('loginModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLoginModal();
+            }
+        });
+
+        document.getElementById('forgotPasswordModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeForgotPasswordModal();
+            }
+        });
+
+        // Close modal on overlay click
+        document.getElementById('demoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDemoModal();
+            }
+        });
+
+        document.getElementById('freeTrialModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFreeTrialModal();
+            }
+        });
+
+        // Listen for messages from iframe (if the demo page sends booking data)
+        window.addEventListener('message', function(e) {
+            // Only accept messages from the demo booking page
+            if (e.origin === 'https://box-it---lock-it---store-it-clinton-tn.webflow.io') {
+                if (e.data.type === 'demo_booking_complete') {
+                    // Save demo booking to backend
+                    saveDemoBooking(e.data.bookingData);
+                }
+            }
+        });
+
+        // Save demo booking to backend
+        async function saveDemoBooking(bookingData) {
+            try {
+                const data = {
+                    action: 'bookDemo',
+                    ...bookingData
+                };
+
+                const response = await fetch(DEMO_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('Demo booking saved:', result);
+                    // Optionally show success message
+                    setTimeout(() => {
+                        alert('Demo booking confirmed! Check your email for details.');
+                        closeDemoModal();
+                    }, 1000);
+                } else {
+                    console.error('Failed to save demo booking:', result.error);
+                }
+            } catch (error) {
+                console.error('Error saving demo booking:', error);
+            }
+        }
+
+        // Scroll animations - exclude calculator section to prevent interference
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements except calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
+                // Skip calculator section elements
+                if (!el.closest('.pricing-calculator')) {
+                    observer.observe(el);
+                }
+            });
+        });
+
+        // Header scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect for hero (disabled to prevent scroll issues)
+        // window.addEventListener('scroll', function() {
+        //     const scrolled = window.pageYOffset;
+        //     const hero = document.querySelector('.hero');
+        //     if (hero && scrolled < hero.offsetHeight) {
+        //         hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        //     }
+        // });
+
+        // Pricing Calculator
+        function calculatePrice() {
+            const locations = parseInt(document.getElementById('locations').value) || 1;
+            const unitsPerLocation = parseInt(document.getElementById('units').value) || 0;
+            
+            // Pricing structure:
+            // $150 for 1-100 units
+            // Then $0.40 per additional unit over 100
+            
+            let monthlyFeePerLocation = 0;
+            
+            if (unitsPerLocation <= 100) {
+                monthlyFeePerLocation = 150;
+            } else {
+                // $150 base + $0.40 per unit over 100
+                const unitsOver100 = unitsPerLocation - 100;
+                monthlyFeePerLocation = 150 + (unitsOver100 * 0.40);
+            }
+            
+            const totalMonthly = monthlyFeePerLocation * locations;
+            const setupFee = 199 * locations;
+            const annualFee = 175 * locations;
+            
+            // Update price display
+            const priceElement = document.getElementById('estimatedPrice');
+            priceElement.innerHTML = `$${totalMonthly.toFixed(2)}<span>/mo</span>`;
+            
+            // Update breakdown
+            const breakdown = document.getElementById('priceBreakdown');
+            if (unitsPerLocation <= 100) {
+                breakdown.innerHTML = `${locations} location${locations > 1 ? 's' : ''} × $150/mo (up to 100 units)`;
+            } else {
+                const unitsOver100 = unitsPerLocation - 100;
+                breakdown.innerHTML = `${locations} location${locations > 1 ? 's' : ''} × $${monthlyFeePerLocation.toFixed(2)}/mo (100 units + ${unitsOver100} × $0.40)`;
+            }
+            
+            // Update interactive facts
+            document.getElementById('factUnits').textContent = unitsPerLocation;
+            document.getElementById('factLocations').textContent = locations;
+            document.getElementById('locationPlural').textContent = locations > 1 ? 's' : '';
+            document.getElementById('factMonthly').textContent = '$' + totalMonthly.toFixed(2);
+            document.getElementById('factSetup').textContent = '$' + setupFee.toFixed(0);
+            
+            // Show CTA after user interacts with calculator
+            const cta = document.getElementById('calculatorCTA');
+            if (cta && !cta.classList.contains('show')) {
+                setTimeout(() => {
+                    cta.classList.add('show');
+                }, 500);
+            }
+        }
+
+        // Range slider sync functions
+        function updateLocationRange() {
+            const input = document.getElementById('locations');
+            const range = document.getElementById('locations-range');
+            range.value = input.value;
+            calculatePrice();
+        }
+
+        function updateLocationInput() {
+            const input = document.getElementById('locations');
+            const range = document.getElementById('locations-range');
+            input.value = range.value;
+            calculatePrice();
+        }
+
+        // Unit values that match the labels
+        const unitValues = [1, 50, 75, 100, 125, 150, 200, 250];
+
+        function updateUnitRange() {
+            const input = document.getElementById('units');
+            const range = document.getElementById('units-range');
+            const inputValue = parseInt(input.value) || 1;
+            
+            // Find closest matching index in unitValues
+            let closestIndex = 0;
+            let minDiff = Math.abs(inputValue - unitValues[0]);
+            
+            for (let i = 1; i < unitValues.length; i++) {
+                const diff = Math.abs(inputValue - unitValues[i]);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestIndex = i;
+                }
+            }
+            
+            range.value = closestIndex;
+            // Update input to match the exact value
+            input.value = unitValues[closestIndex];
+            calculatePrice();
+        }
+
+        function updateUnitInput() {
+            const input = document.getElementById('units');
+            const range = document.getElementById('units-range');
+            const rangeIndex = parseInt(range.value) || 0;
+            const value = unitValues[rangeIndex] || 1;
+            input.value = value;
+            calculatePrice();
+        }
+
+        // Initialize calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial unit value to match slider position
+            const range = document.getElementById('units-range');
+            const input = document.getElementById('units');
+            if (range && input) {
+                const rangeIndex = parseInt(range.value) || 1;
+                const value = unitValues[rangeIndex] || 50;
+                input.value = value;
+            }
+            calculatePrice();
+            // Sync initial values
+            updateLocationRange();
+            updateUnitRange();
+        });
+
+        // FAQ Toggle Function
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Scroll to section function
+        function scrollToSection(selector) {
+            const target = document.querySelector(selector);
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // About Us Modal
+        function openAboutModal() {
+            document.getElementById('aboutModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAboutModal() {
+            document.getElementById('aboutModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Privacy Policy Modal
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Terms of Service Modal
+        function openTermsModal() {
+            document.getElementById('termsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTermsModal() {
+            document.getElementById('termsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Privacy Policy Banner
+        function showPrivacyBanner() {
+            // Check if user has already accepted
+            const privacyAccepted = localStorage.getItem('privacyPolicyAccepted');
+            if (!privacyAccepted) {
+                setTimeout(() => {
+                    const banner = document.getElementById('privacyBanner');
+                    if (banner) {
+                        banner.classList.add('show');
+                        document.body.classList.add('privacy-banner-active');
+                    }
+                }, 1000);
+            }
+        }
+
+        function acceptPrivacyPolicy() {
+            localStorage.setItem('privacyPolicyAccepted', 'true');
+            const banner = document.getElementById('privacyBanner');
+            if (banner) {
+                banner.classList.remove('show');
+                document.body.classList.remove('privacy-banner-active');
+            }
+        }
+
+        function declinePrivacyPolicy() {
+            // Redirect or show message
+            alert('To use this website, you must accept our Privacy Policy.');
+        }
+
+        // Send Privacy Policy Email
+        async function sendPrivacyPolicyEmail() {
+            const email = document.getElementById('privacyEmail').value;
+            const btn = document.getElementById('sendPrivacyBtn');
+            const message = document.getElementById('privacyEmailSent');
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(BACKEND_API_URL + '?action=sendPrivacyPolicy&email=' + encodeURIComponent(email));
+                const result = await response.json();
+
+                if (result.success) {
+                    message.classList.add('show');
+                    btn.textContent = 'Email Sent!';
+                    setTimeout(() => {
+                        message.classList.remove('show');
+                        btn.disabled = false;
+                        btn.textContent = 'Send me a copy';
+                        document.getElementById('privacyEmail').value = '';
+                    }, 3000);
+                } else {
+                    alert('Failed to send email: ' + (result.error || 'Unknown error'));
+                    btn.disabled = false;
+                    btn.textContent = 'Send me a copy';
+                }
+            } catch (error) {
+                console.error('Error sending privacy policy email:', error);
+                alert('Failed to send email. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Send me a copy';
+            }
+        }
+
+        // Send Terms Email
+        async function sendTermsEmail() {
+            const email = document.getElementById('termsEmail').value;
+            const btn = document.getElementById('sendTermsBtn');
+            const message = document.getElementById('termsEmailSent');
+
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(BACKEND_API_URL + '?action=sendTermsOfService&email=' + encodeURIComponent(email));
+                const result = await response.json();
+
+                if (result.success) {
+                    message.classList.add('show');
+                    btn.textContent = 'Email Sent!';
+                    setTimeout(() => {
+                        message.classList.remove('show');
+                        btn.disabled = false;
+                        btn.textContent = 'Send me a copy';
+                        document.getElementById('termsEmail').value = '';
+                    }, 3000);
+                } else {
+                    alert('Failed to send email: ' + (result.error || 'Unknown error'));
+                    btn.disabled = false;
+                    btn.textContent = 'Send me a copy';
+                }
+            } catch (error) {
+                console.error('Error sending terms email:', error);
+                alert('Failed to send email. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Send me a copy';
+            }
+        }
+
+        // Close modals on overlay click
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show privacy banner on page load
+            showPrivacyBanner();
+
+            ['aboutModal', 'privacyModal', 'termsModal'].forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            if (modalId === 'aboutModal') closeAboutModal();
+                            if (modalId === 'privacyModal') closePrivacyModal();
+                            if (modalId === 'termsModal') closeTermsModal();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

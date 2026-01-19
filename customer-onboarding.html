@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Rental Agreement - Meridian</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f9fafb;
+            color: #111827;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 16px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .step.active .step-number {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background: #059669;
+            color: white;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .pricing-breakdown {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        
+        .pricing-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .pricing-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 18px;
+            color: #111827;
+        }
+        
+        .contract-preview {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 24px;
+            max-height: 500px;
+            overflow-y: auto;
+            background: white;
+            margin: 24px 0;
+        }
+        
+        .signature-pad {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f9fafb;
+            margin: 24px 0;
+            min-height: 150px;
+            position: relative;
+        }
+        
+        .signature-pad canvas {
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            background: white;
+            cursor: crosshair;
+        }
+        
+        .signature-controls {
+            margin-top: 12px;
+        }
+        
+        .signature-controls button {
+            margin: 0 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .alert-info {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            color: #1e40af;
+        }
+        
+        .alert-error {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            color: #991b1b;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+        
+        .loading i {
+            font-size: 32px;
+            margin-bottom: 16px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img id="facilityLogo" src="" alt="Facility Logo" style="display: none;">
+            <h1>Complete Your Rental Agreement</h1>
+            <p id="facilityName">Loading...</p>
+        </div>
+        
+        <div class="step-indicator">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <span>Verify Email</span>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <span>Review Contract</span>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <span>Sign & Pay</span>
+            </div>
+        </div>
+        
+        <div id="alertContainer"></div>
+        
+        <!-- Step 1: Email Verification -->
+        <div class="card" id="emailStep">
+            <h2 style="margin-bottom: 16px;">Verify Your Email Address</h2>
+            <p style="color: #6b7280; margin-bottom: 24px;">Please enter your email address to continue with the rental agreement.</p>
+            
+            <form id="emailForm" onsubmit="verifyEmail(event)">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="emailInput" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Verification Code</label>
+                    <input type="text" class="form-input" id="verificationCode" placeholder="Enter code sent to your email" style="display: none;">
+                    <button type="button" class="btn btn-secondary" onclick="sendVerificationCode()" id="sendCodeBtn" style="margin-top: 8px;">Send Verification Code</button>
+                </div>
+                <button type="submit" class="btn btn-primary" id="verifyBtn" style="display: none;">Verify Email</button>
+            </form>
+        </div>
+        
+        <!-- Step 2: Contract Review -->
+        <div class="card hidden" id="contractStep">
+            <h2 style="margin-bottom: 16px;">Review Your Rental Agreement</h2>
+            <div class="contract-preview" id="contractPreview"></div>
+            
+            <div class="pricing-breakdown">
+                <h3 style="margin-bottom: 16px;">Pricing Breakdown</h3>
+                <div class="pricing-row">
+                    <span>Monthly Rent:</span>
+                    <span id="monthlyRent">$0.00</span>
+                </div>
+                <div class="pricing-row">
+                    <span>Administration Fee (one-time):</span>
+                    <span id="adminFee">$15.00</span>
+                </div>
+                <div class="pricing-row">
+                    <span>Insurance (monthly):</span>
+                    <span id="insuranceFee">$15.00</span>
+                </div>
+                <div class="pricing-row">
+                    <span>Tax ({taxRate}%):</span>
+                    <span id="taxAmount">$0.00</span>
+                </div>
+                <div class="pricing-row">
+                    <span>Total Monthly Payment:</span>
+                    <span id="totalMonthly">$0.00</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="proceedToSign()" style="width: 100%;">I Agree - Proceed to Sign</button>
+        </div>
+        
+        <!-- Step 3: Signature & Payment -->
+        <div class="card hidden" id="signStep">
+            <h2 style="margin-bottom: 16px;">Sign Your Agreement</h2>
+            <p style="color: #6b7280; margin-bottom: 24px;">Please sign below to complete your rental agreement.</p>
+            
+            <div class="signature-pad">
+                <canvas id="signatureCanvas" width="800" height="200"></canvas>
+                <div class="signature-controls">
+                    <button type="button" class="btn btn-secondary" onclick="clearSignature()">Clear</button>
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 24px;">
+                <label class="form-label">Full Name (as it appears on ID)</label>
+                <input type="text" class="form-input" id="signerName" required placeholder="John Doe">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <input type="checkbox" id="agreeTerms" required style="margin-right: 8px;">
+                    I agree to the terms and conditions of this rental agreement
+                </label>
+            </div>
+            
+            <button class="btn btn-primary" onclick="completeAgreement()" style="width: 100%; margin-top: 24px;">
+                Complete Agreement & Proceed to Payment
+            </button>
+        </div>
+        
+        <div class="loading hidden" id="loading">
+            <i class="fas fa-spinner"></i>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const API_URL = 'https://script.google.com/macros/s/AKfycby8_MUFwM7Cwvek9MPxO9K_q4Qsbbj6PBl53eama3j6w0gzyYyj4lCUFPyZ9mvDNxkC/exec';
+        
+        let onboardingData = {};
+        let currentStep = 1;
+        let signatureCanvas = null;
+        let signatureCtx = null;
+        let isDrawing = false;
+        
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!token) {
+                showAlert('Invalid or missing token. Please contact the facility.', 'error');
+                return;
+            }
+            
+            loadOnboardingData();
+            initSignaturePad();
+        });
+        
+        async function loadOnboardingData() {
+            try {
+                const response = await fetch(`${API_URL}?action=getOnboardingData&token=${token}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    onboardingData = result.data;
+                    document.getElementById('facilityName').textContent = onboardingData.facilityName || 'Facility';
+                    
+                    if (onboardingData.facilityLogo) {
+                        const logoImg = document.getElementById('facilityLogo');
+                        logoImg.src = onboardingData.facilityLogo;
+                        logoImg.style.display = 'block';
+                    }
+                } else {
+                    showAlert(result.error || 'Failed to load onboarding data', 'error');
+                }
+            } catch (error) {
+                showAlert('Error loading data: ' + error.toString(), 'error');
+            }
+        }
+        
+        function sendVerificationCode() {
+            const email = document.getElementById('emailInput').value;
+            if (!email) {
+                showAlert('Please enter your email address', 'error');
+                return;
+            }
+            
+            // TODO: Call backend to send verification code
+            showAlert('Verification code sent to your email', 'info');
+            document.getElementById('verificationCode').style.display = 'block';
+            document.getElementById('verifyBtn').style.display = 'block';
+            document.getElementById('sendCodeBtn').textContent = 'Resend Code';
+        }
+        
+        function verifyEmail(event) {
+            event.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const code = document.getElementById('verificationCode').value;
+            
+            // TODO: Verify code with backend
+            // For now, just proceed
+            onboardingData.customerEmail = email;
+            showStep(2);
+        }
+        
+        function showStep(step) {
+            currentStep = step;
+            
+            // Update step indicators
+            for (let i = 1; i <= 3; i++) {
+                const stepEl = document.getElementById(`step${i}`);
+                if (i < step) {
+                    stepEl.classList.add('completed');
+                    stepEl.classList.remove('active');
+                } else if (i === step) {
+                    stepEl.classList.add('active');
+                    stepEl.classList.remove('completed');
+                } else {
+                    stepEl.classList.remove('active', 'completed');
+                }
+            }
+            
+            // Show/hide steps
+            document.getElementById('emailStep').classList.toggle('hidden', step !== 1);
+            document.getElementById('contractStep').classList.toggle('hidden', step !== 2);
+            document.getElementById('signStep').classList.toggle('hidden', step !== 3);
+            
+            if (step === 2) {
+                loadContract();
+            }
+        }
+        
+        async function loadContract() {
+            try {
+                const response = await fetch(`${API_URL}?action=getContract&token=${token}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('contractPreview').innerHTML = result.contract;
+                    
+                    // Update pricing
+                    document.getElementById('monthlyRent').textContent = `$${result.pricing.monthlyRent.toFixed(2)}`;
+                    document.getElementById('adminFee').textContent = `$${result.pricing.adminFee.toFixed(2)}`;
+                    document.getElementById('insuranceFee').textContent = `$${result.pricing.insuranceFee.toFixed(2)}`;
+                    document.getElementById('taxAmount').textContent = `$${result.pricing.tax.toFixed(2)}`;
+                    document.getElementById('totalMonthly').textContent = `$${result.pricing.total.toFixed(2)}`;
+                    
+                    onboardingData.pricing = result.pricing;
+                }
+            } catch (error) {
+                showAlert('Error loading contract: ' + error.toString(), 'error');
+            }
+        }
+        
+        function proceedToSign() {
+            showStep(3);
+        }
+        
+        function initSignaturePad() {
+            signatureCanvas = document.getElementById('signatureCanvas');
+            signatureCtx = signatureCanvas.getContext('2d');
+            signatureCtx.strokeStyle = '#111827';
+            signatureCtx.lineWidth = 2;
+            
+            signatureCanvas.addEventListener('mousedown', startDrawing);
+            signatureCanvas.addEventListener('mousemove', draw);
+            signatureCanvas.addEventListener('mouseup', stopDrawing);
+            signatureCanvas.addEventListener('mouseout', stopDrawing);
+            
+            // Touch events for mobile
+            signatureCanvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = signatureCanvas.getBoundingClientRect();
+                startDrawing({
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    target: signatureCanvas
+                });
+            });
+            
+            signatureCanvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                draw({
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+            });
+            
+            signatureCanvas.addEventListener('touchend', stopDrawing);
+        }
+        
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = signatureCanvas.getBoundingClientRect();
+            signatureCtx.beginPath();
+            signatureCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = signatureCanvas.getBoundingClientRect();
+            signatureCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            signatureCtx.stroke();
+        }
+        
+        function stopDrawing() {
+            isDrawing = false;
+        }
+        
+        function clearSignature() {
+            signatureCtx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+        }
+        
+        async function completeAgreement() {
+            const signerName = document.getElementById('signerName').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            if (!signerName) {
+                showAlert('Please enter your full name', 'error');
+                return;
+            }
+            
+            if (!agreeTerms) {
+                showAlert('Please agree to the terms and conditions', 'error');
+                return;
+            }
+            
+            const signatureData = signatureCanvas.toDataURL();
+            
+            if (!signatureData || signatureData === signatureCanvas.toDataURL()) {
+                showAlert('Please provide your signature', 'error');
+                return;
+            }
+            
+            document.getElementById('loading').classList.remove('hidden');
+            
+            try {
+                const formData = new URLSearchParams();
+                formData.append('action', 'completeOnboarding');
+                formData.append('data', JSON.stringify({
+                    token: token,
+                    email: onboardingData.customerEmail,
+                    signerName: signerName,
+                    signature: signatureData,
+                    pricing: onboardingData.pricing
+                }));
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData.toString()
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Redirect to Stripe checkout
+                    if (result.checkoutUrl) {
+                        window.location.href = result.checkoutUrl;
+                    } else {
+                        showAlert('Agreement completed! Check your email for the contract PDF.', 'info');
+                    }
+                } else {
+                    showAlert(result.error || 'Failed to complete agreement', 'error');
+                    document.getElementById('loading').classList.add('hidden');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.toString(), 'error');
+                document.getElementById('loading').classList.add('hidden');
+            }
+        }
+        
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+
